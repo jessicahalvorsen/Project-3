@@ -263,7 +263,7 @@ void SongRec::quickSort(int start, int end) {
 //prints the top 10 song recommendations
 void SongRec::printTopTen() {
     for (int i = 0; i < 20; i++) {
-        cout << songList.at(i).track << endl;
+        cout << i+1 << ". " << songList.at(i).track << " by " << songList.at(i).artist << endl;
     }
 }
 
