@@ -78,6 +78,8 @@ int main() {
     }
 
     //time how long it takes to run merge or quick sort 
+    //used geeks for geeks for clock method
+    //https://www.geeksforgeeks.org/measure-execution-time-function-cpp/
     auto start = high_resolution_clock::now();
     songs.mergeSort(0, songs.listLength() - 1);
     //songs.quickSort(0, songs.listLength() - 1);
