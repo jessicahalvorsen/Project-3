@@ -70,7 +70,7 @@ void SongRec::readCSV(const string& filename) {
         newSong.decade = stoi(decade);
 
         //add the new book to the vector
-        //newSong.points = 100000000 - count; //debugging for sorts
+        newSong.points = 100000000 - count; //debugging for sorts
         songList.push_back(newSong);
         count++;
     }
@@ -80,6 +80,7 @@ void SongRec::readCSV(const string& filename) {
 void SongRec::dancePoints(int choice, int numPoints) {
     //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
+    //iterate through list to allocate percentage of points
     for (Song& song : songList) {
         double diff = abs(choiceDec - song.danceability);
         double minus = diff * numPoints;
@@ -87,9 +88,11 @@ void SongRec::dancePoints(int choice, int numPoints) {
     }
 }
 
+//allocates points for any Songs that match the energy choice of user
 void SongRec::energyPoints(int choice, int numPoints) {
     //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
+    //iterate through list to allocate percentage of points
     for (Song& song : songList) {
         double diff = abs(choiceDec - song.energy);
         double minus = diff * numPoints;
@@ -97,6 +100,7 @@ void SongRec::energyPoints(int choice, int numPoints) {
     }
 }
 
+//allocates points for any Songs that match the mode choice of user
 void SongRec::modePoints(string choice, int numPoints) {
     int choiceInt;
     if (choice == "major")
@@ -110,9 +114,11 @@ void SongRec::modePoints(string choice, int numPoints) {
     }
 }
 
+//allocates points for any Songs that match the acousticness choice of user
 void SongRec::acousticPoints(int choice, int numPoints) {
     //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
+    //iterate through list to allocate percentage of points
     for (Song& song : songList) {
         double diff = abs(choiceDec - song.acousticness);
         double minus = diff * numPoints;
@@ -120,9 +126,11 @@ void SongRec::acousticPoints(int choice, int numPoints) {
     }
 }
 
+//allocates points for any Songs that match the valence choice of user
 void SongRec::valencePoints(int choice, int numPoints) {
     //choice must be divided by 10 to match data
     double choiceDec = double(choice) / 10;
+    //iterate through list to allocate percentage of points
     for (Song& song : songList) {
         double diff = abs(choiceDec - song.valence);
         double minus = diff * numPoints;
@@ -130,9 +138,11 @@ void SongRec::valencePoints(int choice, int numPoints) {
     }
 }
 
+//allocates points for any Songs that match the tempo choice of user
 void SongRec::tempoPoints(int choice, int numPoints) {
     //choice must be multiplied by 20 to match data
     double choiceDec = double(choice) * 20;
+    //iterate through list to allocate percentage of points
     for (Song& song : songList) {
         double diff = abs(choiceDec - song.tempo);
         double minus = diff * numPoints;
@@ -145,9 +155,7 @@ int SongRec::listLength() {
     return songList.size();
 }
 
-
-//used mygreatlearning.com as a resource, link below
-//https://www.mygreatlearning.com/blog/merge-sort/#:~:text=Pseudocode%20for%20MergeSort%201%20Declare%20left%20and%20right,we%20will%20call%20merge%20on%20the%202%20subproblems
+//used lecture slides on sorting and sorting study guide for merge sort algorithm
 //uses merge sort algorithm to sort songs by points in descending order
 void SongRec::mergeSort(int start, int end) {
     if (start < end) {
@@ -163,87 +171,76 @@ void SongRec::merge(int start, int mid, int end) {
     int size1 = mid - start + 1;
     int size2 = end - mid;
 
-    //create containers for left and right sides;
-    Song leftArr[size1], rightArr[size2];
+    //create vectors for left and right sides;
+    vector<Song> left, right;
 
     //load the left vector and right vector with corresponding points
     for (int i = 0; i < size1; i++) {
-        leftArr[i] = songList.at(start + i);
+        left.push_back(songList.at(start + i));
     }
     for (int j = 0; j < size2; j++) {
-        rightArr[j] = songList.at(mid + 1 + j);
+        right.push_back(songList.at(mid + 1 + j));
     }
 
     //make new counter variables
     int i = 0, j = 0, k = start;
 
+    //while either vector still has elements,
     //complete comparisons to put in descending order
     while (i < size1 && j < size2) {
-        if (leftArr[i].points >= rightArr[j].points) {
-            songList.at(k) = leftArr[i];
+        if (left.at(i).points >= right.at(j).points) {
+            songList.at(k) = left.at(i);
             i++;
         }
         else {
-            songList.at(k) = rightArr[j];
+            songList.at(k) = right.at(j);
             j++;
         }
         k++;
     }
 
-    //put leftover indexes from the left side into songList
-    while (i < size1) {
-        songList.at(k) = leftArr[i];
-        i++;
+    //put leftover indexes from the right side into songList
+    while (j < size2) {
+        songList.at(k) = right.at(j);
+        j++;
         k++;
     }
 
-    //put leftover indexes from the right side into songList
-    while (j < size2) {
-        songList.at(k) = rightArr[j];
-        j++;
+    //put leftover indexes from the left side into songList
+    while (i < size1) {
+        songList.at(k) = left.at(i);
+        i++;
         k++;
     }
 }
 
-//used as a resource for quick sort, link below
-//https://www.geeksforgeeks.org/cpp-program-for-quicksort/
+//used lecture slides on sorting and sorting study guide for quick sort algorithm
 //uses quickSort algorithm to sort songs by points in descending order
 int SongRec::quickSortHelp(int start, int end) {
     //pivot starts as the first element
     int pivot = songList.at(start).points;
-    int count = 0;
 
-    //find how many songs have points less than the pivot
-    //this will be the starting position of the pivot
-    for (int i = start + 1; i <= end; i++) {
-        if (songList.at(i).points >= pivot) {
-            count++;
-        }
-    }
-
-    //move pivot to the new correct position
-    int pivotIndex = start + count;
-    swap(songList.at(pivotIndex), songList.at(start));
-
-    //move 'up' and 'down' until they reach the pivot point
+    //move 'up' and 'down' until they reach each other
     int up = start, down = end;
-    while (up < pivotIndex && down > pivotIndex) {
-        //move up until it gets a value <= to the pivot value
+    while (up < down) {
+        //move up until it gets a value >= to the pivot value
         while(songList.at(up).points >= pivot) {
             up++;
         }
-        //move down until it gets a value > the pivot
+        //move down until it gets a value < the pivot
         while(songList.at(down).points < pivot) {
             down--;
         }
-        //if up and down have not reached the pivot yet, swap up and down values
-        if (up < pivotIndex && down > pivotIndex) {
+        //if up and down have not reached each other
+        if (up < down) {
             swap(songList.at(up), songList.at(down));
             up++;
             down--;
         }
     }
-    return pivotIndex;
+    //swap the start value with down
+    swap(songList.at(start), songList.at(down));
+    return down;
 }
 
 void SongRec::quickSort(int start, int end) {
