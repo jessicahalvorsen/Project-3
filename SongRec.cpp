@@ -19,7 +19,6 @@ void SongRec::readCSV(const string& filename) {
     string line;
     getline(myFile, line);
 
-    int count = 0;
     //read in all the data line by line
     while(getline(myFile, line)) {
 
@@ -70,9 +69,7 @@ void SongRec::readCSV(const string& filename) {
         newSong.decade = stoi(decade);
 
         //add the new book to the vector
-        newSong.points = 100000000 - count; //debugging for sorts
         songList.push_back(newSong);
-        count++;
     }
 }
 
