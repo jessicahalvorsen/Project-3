@@ -184,8 +184,16 @@ void SongRec::merge(int start, int mid, int end) {
 
     //while either vector still has elements,
     //complete comparisons to put in descending order
-    while (i < size1 && j < size2) {
-        if (left.at(i).points >= right.at(j).points) {
+    while (i < size1 || j < size2) {
+        if (i < size1 && j < size2 && left.at(i).points >= right.at(j).points){
+            songList.at(k) = left.at(i);
+            i++;
+        }
+        else if (j < size2) {
+            songList.at(k) = right.at(j);
+            j++;
+        }
+        else if (i < size1) {
             songList.at(k) = left.at(i);
             i++;
         }
@@ -195,27 +203,13 @@ void SongRec::merge(int start, int mid, int end) {
         }
         k++;
     }
-
-    //put leftover indexes from the right side into songList
-    while (j < size2) {
-        songList.at(k) = right.at(j);
-        j++;
-        k++;
-    }
-
-    //put leftover indexes from the left side into songList
-    while (i < size1) {
-        songList.at(k) = left.at(i);
-        i++;
-        k++;
-    }
 }
 
 //used lecture slides on sorting and sorting study guide for quick sort algorithm
 //uses quickSort algorithm to sort songs by points in descending order
 int SongRec::quickSortHelp(int start, int end) {
     //pivot starts as the first element
-    int pivot = songList.at(start).points;
+    double pivot = songList.at(start).points;
 
     //move 'up' and 'down' until they reach each other
     int up = start, down = end;
