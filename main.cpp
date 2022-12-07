@@ -13,7 +13,7 @@ int main() {
     
     //1. read in csv file and create book struct
     SongRec songs;
-    songs.readCSV("songs.csv");
+    songs.readCSV("songs_good.csv");
 
 
     //2. welcome the user to the song recommender
@@ -87,7 +87,7 @@ int main() {
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
     
-    cout << "Time taken by function: " << duration.count() << " microseconds" << endl;
+    cout << "\nTime taken by function: " << duration.count() << " microseconds" << endl;
 
     //5. return a list of the top 10 books for the user
     songs.printTopTen(); 
