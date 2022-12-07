@@ -215,11 +215,11 @@ int SongRec::quickSortHelp(int start, int end) {
     int up = start, down = end;
     while (up < down) {
         //move up until it gets a value >= to the pivot value
-        while(songList.at(up).points >= pivot) {
+        while(songList.at(up).points >= pivot && up < end) {
             up++;
         }
         //move down until it gets a value < the pivot
-        while(songList.at(down).points < pivot) {
+        while(songList.at(down).points < pivot && down > start) {
             down--;
         }
         //if up and down have not reached each other
